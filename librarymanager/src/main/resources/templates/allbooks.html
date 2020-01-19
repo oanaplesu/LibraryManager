@@ -6,19 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <div th:replace="fragments/index :: cssfiles"></div>
-    <link rel="stylesheet" th:href="@{/css/books.css} "/>
-
     <title th:replace="fragments/index :: title"></title>
-
 </head>
 <body>
 
     <nav th:replace="fragments/index :: navbar" > </nav>
-
-    <button type="button" class="btn btn-primary btn-lg" style="margin:30px">
-        Adauga Carte
-        <i class="fa fa-plus"></i>
-    </button>
+    <a th:href="@{/book/new}">
+        <button type="button" class="btn btn-primary btn-lg" style="margin:30px">
+            Adauga Carte
+            <i class="fa fa-plus"></i>
+        </button>
+    </a>
 
     <form style="margin-left:30px; margin-right:30px">
         <div class="form-row align-items-center">
@@ -54,114 +52,18 @@
     </form>
 
     <div class="row row-cols-1 row-cols-md-4" id="card-book-container">
-        <div class="col mb-3">
+        <div  th:each="book: ${booksList}" class="col mb-3">
             <div class="card h-100 card-book">
-                <img th:src="@{/images/test1.jpeg}" class="card-img-top" alt="...">
+                <img th:src="@{/book/files/{id}(id = ${book.imagePath})}" class="card-img-top" alt="..."/>
                 <div class="card-body card-book-details">
-                    <h4 class="card-title">Fratii Karamazov</h4>
-                    <h5>Dostoievsky</h5>
-                    <p>(1900)</p>
+                    <h4 class="card-title" th:text="${book.title}"></h4>
+                    <h5 th:text="${book.author}"></h5>
+                    <p th:text="${book.year}"></p>
                 </div>
                 <div class="card-footer">
-                    <button type="button" class="btn btn-outline-info float-right">Vezi Detalii</button>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test2.jpeg}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Morometii</h4>
-                    <h5>Marin Preda</h5>
-                    <p>(1955)</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test2.jpeg}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Morometii</h4>
-                    <h5>Marin Preda</h5>
-                    <p>(1955)</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test3.png}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Fratii Karamazov</h4>
-                    <h5>Dostoievsky</h5>
-                    <p>(1900)</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test3.png}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Fratii Karamazov</h4>
-                    <h5>Dostoievsky</h5>
-                    <p>(1900)</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test2.jpeg}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Fratii Karamazov</h4>
-                    <h5>Dostoievsky</h5>
-                    <p>(1900)</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test2.jpeg}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Fratii Karamazov</h4>
-                    <h5>Dostoievsky</h5>
-                    <p>(1900)</p>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test2.jpeg}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Fratii Karamazov</h4>
-                    <h5>Dostoievsky</h5>
-                    <p>(1900)</p>
-                </div>
-            </div>
-        </div>
-        <div class="col mb-3">
-            <div class="card h-100 card-book">
-                <img th:src="@{/images/test1.jpeg}" class="card-img-top" alt="...">
-                <div class="card-body card-book-details">
-                    <h4 class="card-title">Fratii Karamazov</h4>
-                    <h5>Dostoievsky</h5>
-                    <p>(1900)</p>
+                   <a th:href="@{/book/{id}(id=${book.id})}">
+                        <button type="button" class="btn btn-outline-info float-right">Vezi Detalii</button>
+                    </a>
                 </div>
             </div>
         </div>

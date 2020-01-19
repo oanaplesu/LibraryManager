@@ -1,0 +1,12 @@
+#card-book-container {
+    padding:30px;
+    margin-right:0;
+}
+
+.card-book {
+    margin: 7px;
+}
+
+.card-book-details {
+    text-align : center;
+}

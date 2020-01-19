@@ -18,16 +18,16 @@
         </button>
     </a>
 
-    <form style="margin-left:30px; margin-right:30px">
+    <form style="margin-left:30px; margin-right:30px" action="#" th:action="@{/book/page}" method="get">
         <div class="form-row align-items-center">
             <div class="col-sm-3 my-1">
-                <input type="text" class="form-control" id="book-title" placeholder="Titlu">
+                <input type="text" class="form-control" id="book-title" placeholder="Titlu" name="title">
             </div>
             <div class="col-sm-3 my-1">
-                <input type="text" class="form-control" id="book-author" placeholder="Autor">
+                <input type="text" class="form-control" id="book-author" placeholder="Autor" name="author">
             </div>
             <div class="col-sm-2 my-1">
-                <input type="text" class="form-control" id="publishing-year" placeholder="An aparitie">
+                <input type="text" class="form-control" id="publishing-year" placeholder="An aparitie" name="year">
             </div>
             <div class="col-auto my-1">
              <p style="margin-bottom: 0px">Ordoneaza: </p>
@@ -61,8 +61,11 @@
                     <p th:text="${book.year}"></p>
                 </div>
                 <div class="card-footer">
-                   <a th:href="@{/book/{id}(id=${book.id})}">
+                    <a th:href="@{/book/view/{id}(id=${book.id})}">
                         <button type="button" class="btn btn-outline-info float-right">Vezi Detalii</button>
+                    </a>
+                    <a th:href="@{/book/edit/{id}(id=${book.id})}">
+                        <button type="button" class="btn btn-outline-warning float-right" style="margin-right: 10px">Editeaza</button>
                     </a>
                 </div>
             </div>

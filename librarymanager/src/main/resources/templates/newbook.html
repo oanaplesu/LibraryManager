@@ -15,32 +15,32 @@
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-10 col-md-8 col-lg-6">
                 <!-- Form -->
-    <form action="#" th:action="@{/book/new}" th:object="${book}" enctype="multipart/form-data" method="post">
+    <form action="#" th:action="@{/book/save}" th:object="${book}" enctype="multipart/form-data" method="post">
         <div class="form-group">
             <label for="title">Titlu</label>
-            <input class="form-control" th:field="*{title}"/>
+            <input class="form-control" th:field="*{title}" id="title"/>
         </div>
         <div class="form-group">
             <label for="author">Autor</label>
-            <input class="form-control" th:field="*{author}"/>
+            <input class="form-control" th:field="*{author}" id="author"/>
         </div>
 
         <div class="form-group">
             <label for="nrPages">Numar pagini</label>
-            <input class="form-control" th:field="*{nrPages}"/>
+            <input class="form-control" th:field="*{nrPages}" id="nrPages"/>
         </div>
         <div class="form-group">
             <label for="publishingHouse">Editura</label>
-            <input type="text" class="form-control" th:field="*{publishingHouse}"/>
+            <input type="text" class="form-control" th:field="*{publishingHouse}" id="publishingHouse"/>
         </div>
         <div class="form-group">
             <label for="year">An publicare</label>
-            <input type="text" class="form-control" th:field="*{year}"/>
+            <input type="text" class="form-control" th:field="*{year}" id="year"/>
         </div>
 
-        <div>
-            <label>Imagine</label>
-            <input type="file" name="file" class="form-control"/>
+        <div class="form-group">
+            <label for="image">Imagine</label>
+            <input type="file" name="file" class="form-control-file" id="image"/>
         </div>
         <button type="submit" class="btn btn-primary btn-large">Adauga</button>
     </form>

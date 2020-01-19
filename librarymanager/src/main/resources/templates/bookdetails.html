@@ -11,8 +11,41 @@
 <body>
     <nav th:replace="fragments/index :: navbar" > </nav>
 
-    <h1>Book details</h1>
-
+    <div class="row" style="padding: 30px">
+        <div class="image-container col-md-4">
+            <img th:src="@{/book/files/{id}(id = ${book.imagePath})}" class="card-img-top" alt="..."/>
+        </div>
+        <div class="col-md-6" style="font-size: 20pt">
+            <div>
+                <b><span>Titlu: </span></b>
+                <span th:text="${book.title}"></span>
+            </div>
+            <div>
+                <b><span>Autor: </span></b>
+                <span th:text="${book.author}"></span>
+            </div>
+            <div>
+                <b><span>An aparitie: </span></b>
+                <span th:text="${book.year}"></span>
+            </div>
+            <div>
+                <b><span>Editura: </span></b>
+                <span th:text="${book.publishingHouse}"></span>
+            </div>
+            <div>
+                <b><span>Numar de pagini: </span></b>
+                <span th:text="${book.nrPages}"></span>
+            </div>
+            <div style="margin-top: 15px">
+                <a th:href="@{/book/edit/{id}(id=${book.id})}">
+                    <button type="button" class="btn btn-outline-warning btn-lg" style="margin-right: 10px">Editeaza</button>
+                </a>
+                <a th:href="@{/book/delete/{id}(id=${book.id})}">
+                    <button type="button" class="btn btn-outline-danger btn-lg">Sterge</button>
+                </a>
+            </div>
+        </div>
+    </div>
     <div th:replace="fragments/index :: jsfiles"> </div>
 </body>
 </html>

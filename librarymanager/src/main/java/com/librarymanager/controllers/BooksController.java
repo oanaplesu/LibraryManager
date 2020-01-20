@@ -8,6 +8,8 @@ import com.librarymanager.services.StorageService;
 import com.librarymanager.storage.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -31,14 +33,12 @@ public class BooksController {
     private StorageService storageService;
 
 
-    @GetMapping(value = {"/page", "/page/{pageNr}"})
-    public String listAllBooks(@PathVariable Optional<Long> pageNr,
+    @GetMapping(value = {"/all"})
+    public String listAllBooks(@RequestParam(required = false, defaultValue = "1") int page,
                                @RequestParam(required = false) String title,
                                @RequestParam(required = false) String author,
                                @RequestParam(required = false) String year,
                                Model model) {
-        long pageNr_ = pageNr.isPresent() ? pageNr.get() : 1;
-
         List<BookSpecification> filters = new ArrayList<>();
 
         if(title != null) {
@@ -59,15 +59,19 @@ public class BooksController {
             spec = ((spec == null) ? Specification.where(filter) : spec.and(filter));
         }
 
-        List<Book> booksList;
+        PageRequest pageable = PageRequest.of(page - 1 , 10);
+        Page<Book> booksPage;
 
         if(spec != null) {
-            booksList = bookService.filterAll(spec);
+            booksPage = bookService.filterAndPaginate(spec, pageable);
         } else {
-            booksList = bookService.listAll();
+            booksPage = bookService.paginate(pageable);
         }
 
-        model.addAttribute("booksList", booksList);
+        model.addAttribute("booksList", booksPage.getContent());
+        model.addAttribute("page", page);
+        model.addAttribute("isFirstPage", booksPage.isFirst());
+        model.addAttribute("isLastPage", booksPage.isLast());
         return "allbooks";
     }
 
@@ -91,7 +95,7 @@ public class BooksController {
         }
 
         bookService.save(book);
-        return "redirect:/book/page";
+        return "redirect:/book/all";
     }
 
     @GetMapping("/view/{id}")
@@ -104,7 +108,7 @@ public class BooksController {
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable long id, Model model) {
         bookService.delete(id);
-        return "redirect:/book/page";
+        return "redirect:/book/all";
     }
 
     @RequestMapping("/edit/{id}")

@@ -18,7 +18,7 @@
         </button>
     </a>
 
-    <form style="margin-left:30px; margin-right:30px" action="#" th:action="@{/book/page}" method="get">
+    <form style="margin-left:30px; margin-right:30px" action="#" th:action="@{/book/all}" method="get">
         <div class="form-row align-items-center">
             <div class="col-sm-3 my-1">
                 <input type="text" class="form-control" id="book-title" placeholder="Titlu" name="title">
@@ -71,6 +71,32 @@
             </div>
         </div>
     </div>
+
+    <nav>
+        <ul class="pagination justify-content-center" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+            <p th:text="${queryStr}"></p>
+            <li class="page-item" th:classappend="${isFirstPage} ? disabled : ''">
+                <a class="page-link" tabindex="-1"
+                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page - 1}).toUriString()}">Previous</a>
+            </li>
+            <li class="page-item" th:if="${not isFirstPage}">
+                <a class="page-link" th:text="${page - 1}"
+                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page - 1}).toUriString()}"></a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" th:text="${page}"
+                   th:href="${urlBuilder.fromCurrentRequest().toUriString()}"></a>
+            </li>
+            <li class="page-item" th:if="${not isLastPage}">
+                <a class="page-link" th:text="${page + 1}"
+                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page + 1}).toUriString()}"></a>
+            </li>
+            <li class="page-item" th:classappend="${isLastPage} ? disabled : ''">
+                <a class="page-link"
+                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page + 1}).toUriString()}">Next</a>
+            </li>
+        </ul>
+    </nav>
 
     <div th:replace="fragments/index :: jsfiles"> </div>
 

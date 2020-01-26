@@ -1,22 +1,25 @@
 package com.librarymanager.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bookcopy_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private BookCopy bookCopy;
+    private BookCopy bookcopy;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -24,47 +27,58 @@ public class Loan {
     @JsonIgnore
     private User user;
 
-    private String loanDate;
-
     private boolean notReturned;
 
-    public int getId() {
+    @CreationTimestamp
+    private LocalDateTime loanDate;
+
+    private LocalDateTime returnedDate;
+
+    public long getId() {
         return id;
     }
 
     public BookCopy getBookcopy() {
-        return bookCopy;
+        return bookcopy;
     }
 
     public User getUser() {
         return user;
     }
 
-    public String getLoanDate() {
+    public LocalDateTime getLoanDate() {
         return loanDate;
+    }
+
+    public LocalDateTime getReturnedDate() {
+        return returnedDate;
     }
 
     public boolean isNotReturned() {
         return notReturned;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
     public void setBookcopy(BookCopy bookcopy) {
-        this.bookCopy = bookcopy;
+        this.bookcopy = bookcopy;
     }
 
     public void setUser(User user) {
         this.user = user;
     }
 
-    public void setLoanDate(String loanDate) {
+    public void setNotReturned(boolean notReturned) {
+        this.notReturned = notReturned;
+    }
+
+    public void setLoanDate(LocalDateTime loanDate) {
         this.loanDate = loanDate;
     }
 
-    public void setNotReturned(boolean notReturned) {
-        this.notReturned = notReturned;
+    public void setReturnedDate(LocalDateTime returnedDate) {
+        this.returnedDate = returnedDate;
     }
 }

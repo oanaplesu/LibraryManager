@@ -10,3 +10,14 @@
 .card-book-details {
     text-align : center;
 }
+
+.disabled-form-input:focus
+{
+    outline:none;
+    box-shadow:none;
+    border: 1px solid #ced4da;
+}
+
+.card-loan-container {
+    margin-right: 0px;
+}

@@ -2,8 +2,10 @@ package com.librarymanager.services;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
+import com.librarymanager.entities.Book;
 import com.librarymanager.entities.Role;
 import com.librarymanager.entities.User;
 import com.librarymanager.misc.UserRegistrationDto;
@@ -21,13 +23,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository repo;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return  repo.findByEmail(email);
     }
 
     public User save(UserRegistrationDto registration) {
@@ -37,12 +39,13 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registration.getEmail());
         user.setPassword(passwordEncoder.encode(registration.getPassword()));
         user.setRoles(Arrays.asList(new Role("ROLE_USER")));
-        return userRepository.save(user);
+        return repo.save(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
+        User user = findByEmail(email);
+
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
@@ -56,4 +59,25 @@ public class UserServiceImpl implements UserService {
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
+
+    public List<User> listAll() {
+        return repo.findAll();
+    }
+
+    public List<User> filterByEmail(String email) {
+        return repo.findByEmailContaining(email);
+    }
+
+    public void save(User book) {
+        repo.save(book);
+    }
+
+    public User get(long id) {
+        return repo.findById(id).get();
+    }
+
+    public void delete(long id) {
+        repo.deleteById(id);
+    }
+
 }

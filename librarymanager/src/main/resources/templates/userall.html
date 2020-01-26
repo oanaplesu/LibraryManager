@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <div th:replace="fragments/index :: cssfiles"></div>
+    <title th:replace="fragments/index :: title"></title>
+</head>
+<body>
+<nav th:replace="fragments/index :: navbar" > </nav>
+
+<form style="margin-left:30px; margin-right:30px" action="#" th:action="@{/user/all}" method="get">
+    <div class="form-row align-items-center">
+        <div class="col-auto my-1">
+            <p style="margin-bottom: 0px">Email: </p>
+        </div>
+        <div class="col-sm-3 my-1">
+            <input type="text" class="form-control" id="user-email" name="email">
+        </div>
+        <div class="col-auto my-1">
+            <button type="submit" class="btn btn-dark">Cauta</button>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ID User</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nume</th>
+        <th scope="col">Prenume</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user: ${usersList}">
+        <th scope="row" th:text="${user.id}"></th>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.firstName}"></td>
+        <td>
+            <a th:href="@{/loan/view/(userId=${user.id})}">Imprumuturi</a>
+            <a th:href="@{/user/edit/{id}(id=${user.id})}">Editeaza</a>
+            <a th:href="@{/user/delete/{id}(id=${user.id})}">Sterge</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:replace="fragments/index :: jsfiles"> </div>
+</body>
+</html>

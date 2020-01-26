@@ -13,20 +13,6 @@
 
     <h2 th:text="${'ID Carte: ' + bookId}"></h2>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">ID Exemplar</th>
-            <th scope="col">Filiala</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="bookcopy: ${bookCopyList}">
-            <th scope="row" th:text="${bookcopy.id}"></th>
-            <td th:text="${bookcopy.branchName}"></td>
-        </tr>
-        </tbody>
-    </table>
 
     <button class="btn btn-primary btn-lg" id="show-form-copybook" style="margin-left:30px; margin-bottom: 30px">Adauga Exemplar</button>
 
@@ -37,7 +23,7 @@
                 <form action="#" th:action="@{/bookcopy/save}" th:object="${bookcopy}" method="post">
                     <div class="form-group">
                         <label for="bookId">ID Carte</label>
-                        <input class="form-control" name="bookId" th:value="${bookId}" id="bookId" readonly/>
+                        <input class="form-control disabled-form-input" name="bookId" th:value="${bookId}" id="bookId" readonly/>
                     </div>
                     <div class="form-group">
                         <label for="id">ID Exemplar</label>
@@ -52,6 +38,21 @@
             </div>
         </div>
     </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID Exemplar</th>
+            <th scope="col">Filiala</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bookcopy: ${bookCopyList}">
+            <th scope="row" th:text="${bookcopy.id}"></th>
+            <td th:text="${bookcopy.branchName}"></td>
+        </tr>
+        </tbody>
+    </table>
 
     <div th:replace="fragments/index :: jsfiles"> </div>
 </body>

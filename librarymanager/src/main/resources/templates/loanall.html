@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <div th:replace="fragments/index :: cssfiles"></div>
+    <title th:replace="fragments/index :: title"></title>
+</head>
+<body>
+<nav th:replace="fragments/index :: navbar" > </nav>
+
+<button type="button" class="btn btn-primary btn-lg" style="margin:30px" id="show-form-newloan">
+    Adauga Imprumut
+    <i class="fa fa-plus"></i>
+</button>
+
+<div class="container h-100" style="margin-top: 30px; margin-bottom: 30px; display: none" id="form-newloan">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-10 col-md-8 col-lg-6">
+            <!-- Form -->
+            <form action="#" th:action="@{/loan/new}" method="post">
+                <div class="form-group">
+                    <label for="userId">ID User</label>
+                    <input class="form-control disabled-form-input" name="userId" th:value="${userId}" id="userId" readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="bookcopyId">ID Exemplar</label>
+                    <input class="form-control" name="bookcopyId" id="bookcopyId"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Adauga</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row h-100 justify-content-center align-items-center card-loan-container">
+    <div class="col-10 col-md-8 col-lg-6">
+        <h2 th:text="${'Imprumuturi curente:  ' + loanListNotReturned.size()}"></h2>
+        <div th:each="loan: ${loanListNotReturned}" th:with="maxReturnDate=${loan.loanDate.plusMonths(1)}" class="card bg-light"  th:classappend="${maxReturnDate.compareTo(#temporals.createNow()) < 0} ? 'border-danger' : 'border-success'" style="margin: 30px">
+            <div class="card-header" th:text="${'ID #' + loan.id}">ID #</div>
+            <div class="card-body">
+                <div>
+                    <b><span>Email Utilizator: </span></b>
+                    <span th:text="${loan.user.email}"></span>
+                </div>
+                <div>
+                    <b><span>Nume Utilizator: </span></b>
+                    <span th:if="${loan.user.firstName != null and loan.user.lastName != null}" th:text="${loan.user.firstName + ' ' + loan.user.lastName}"></span>
+                </div>
+                <div>
+                    <b><span>Id exemplar: </span></b>
+                    <span th:text="${loan.bookcopy.id}"></span>
+                </div>
+                <div>
+                    <b><span>Id carte: </span></b>
+                    <span th:text="${loan.bookcopy.book.id}"></span>
+                </div>
+                <div>
+                    <b><span>Titlu: </span></b>
+                    <span  th:text="${loan.bookcopy.book.title}"></span>
+                </div>
+                <div>
+                    <b><span>Autor: </span></b>
+                    <span  th:text="${loan.bookcopy.book.author}"></span>
+                </div>
+                <div>
+                    <b><span>Imprumutat la: </span></b>
+                    <span th:text="${#temporals.format(loan.loanDate, 'dd-MM-yyyy HH:mm')}"></span>
+                </div>
+                <div>
+                    <b><span>Termen limita: </span></b>
+                    <span th:text="${#temporals.format(maxReturnDate, 'dd-MM-yyyy HH:mm')}"></span>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a th:href="@{/loan/mark_returned/{id}(id=${loan.id}, userId=${userId})}">
+                    <button type="button" class="btn btn-outline-info float-right" style="margin-right:10px">Marcheaza ca returnat</button>
+                </a>
+                <a th:href="@{/loan/delete/{id}(id=${loan.id}, userId=${userId})}">
+                    <button type="button" class="btn btn-outline-danger float-right" style="margin-right:10px">Sterge</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row h-100 justify-content-center align-items-center card-loan-container">
+    <div class="col-10 col-md-8 col-lg-6">
+        <h2 th:text="${'Carti returnate:  ' + loanListReturned.size()}"></h2>
+        <div th:each="loan: ${loanListReturned}" class="card bg-light" style="margin: 30px">
+            <div class="card-header" th:text="${'ID #' + loan.id}">ID #</div>
+            <div class="card-body">
+                <div>
+                    <b><span>Email Utilizator: </span></b>
+                    <span th:text="${loan.user.email}"></span>
+                </div>
+                <div>
+                    <b><span>Nume Utilizator: </span></b>
+                    <span th:if="${loan.user.firstName != null and loan.user.lastName != null}" th:text="${loan.user.firstName + ' ' + loan.user.lastName}"></span>
+                </div>
+                <div>
+                    <b><span>Id exemplar: </span></b>
+                    <span th:text="${loan.bookcopy.id}"></span>
+                </div>
+                <div>
+                    <b><span>Id carte: </span></b>
+                    <span th:text="${loan.bookcopy.book.id}"></span>
+                </div>
+                <div>
+                    <b><span>Titlu: </span></b>
+                    <span th:text="${loan.bookcopy.book.title}"></span>
+                </div>
+                <div>
+                    <b><span>Autor: </span></b>
+                    <span th:text="${loan.bookcopy.book.author}"></span>
+                </div>
+                <div>
+                    <b><span>Imprumutat la: </span></b>
+                    <span th:text="${#temporals.format(loan.loanDate, 'dd-MM-yyyy HH:mm')}"></span>
+                </div>
+                <div>
+                    <b><span>Returnat la: </span></b>
+                    <span th:text="${#temporals.format(loan.returnedDate, 'dd-MM-yyyy HH:mm')}"></span>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent">
+                <a th:href="@{/loan/delete/{id}(id=${loan.id}, userId=${userId})}">
+                    <button type="button" class="btn btn-outline-danger float-right" style="margin-right:10px">Sterge</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/index :: jsfiles"> </div>
+</body>
+</html>

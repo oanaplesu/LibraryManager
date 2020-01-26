@@ -80,18 +80,18 @@
                 <a class="page-link" tabindex="-1"
                    th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page - 1}).toUriString()}">Previous</a>
             </li>
-            <li class="page-item" th:if="${not isFirstPage}">
-                <a class="page-link" th:text="${page - 1}"
-                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page - 1}).toUriString()}"></a>
-            </li>
-            <li class="page-item active">
+<!--            <li class="page-item" th:if="${not isFirstPage}">-->
+<!--                <a class="page-link" th:text="${page - 1}"-->
+<!--                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page - 1}).toUriString()}"></a>-->
+<!--            </li>-->
+            <li class="page-item">
                 <a class="page-link" th:text="${page}"
                    th:href="${urlBuilder.fromCurrentRequest().toUriString()}"></a>
             </li>
-            <li class="page-item" th:if="${not isLastPage}">
-                <a class="page-link" th:text="${page + 1}"
-                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page + 1}).toUriString()}"></a>
-            </li>
+<!--            <li class="page-item" th:if="${not isLastPage}">-->
+<!--                <a class="page-link" th:text="${page + 1}"-->
+<!--                   th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page + 1}).toUriString()}"></a>-->
+<!--            </li>-->
             <li class="page-item" th:classappend="${isLastPage} ? disabled : ''">
                 <a class="page-link"
                    th:href="${urlBuilder.fromCurrentRequest().replaceQueryParam('page', {page + 1}).toUriString()}">Next</a>

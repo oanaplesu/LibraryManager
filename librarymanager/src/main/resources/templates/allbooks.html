@@ -11,6 +11,7 @@
 <body>
 
     <nav th:replace="fragments/index :: navbar" > </nav>
+
     <a th:href="@{/book/new}">
         <button type="button" class="btn btn-primary btn-lg" style="margin:30px">
             Adauga Carte
@@ -52,7 +53,7 @@
     </form>
 
     <div class="row row-cols-1 row-cols-md-4" id="card-book-container">
-        <div  th:each="book: ${booksList}" class="col mb-3">
+        <div th:each="book: ${booksList}" class="col mb-3">
             <div class="card h-100 card-book">
                 <img th:src="@{/book/files/{id}(id = ${book.imagePath})}" class="card-img-top" alt="..."/>
                 <div class="card-body card-book-details">

@@ -1,4 +1,7 @@
 package com.librarymanager.misc;
 
-public class BookCopyStats {
+public interface BookCopyStats {
+    String getBranchName();
+    int getNrTotal();
+    int getNrAvailable();
 }

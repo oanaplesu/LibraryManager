@@ -1,10 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <div th:replace="fragments/index :: cssfiles"></div>
+    <title th:replace="fragments/index :: title"></title>
 </head>
 <body>
-$END$
+    <nav th:replace="fragments/index :: navbar" > </nav>
+
+    <h2 th:text="${'ID Carte: ' + bookId}"></h2>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID Exemplar</th>
+            <th scope="col">Filiala</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bookcopy: ${bookCopyList}">
+            <th scope="row" th:text="${bookcopy.id}"></th>
+            <td th:text="${bookcopy.branchName}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary btn-lg" id="show-form-copybook" style="margin-left:30px; margin-bottom: 30px">Adauga Exemplar</button>
+
+    <div class="container h-100" style="margin-top: 30px; margin-bottom: 30px; display: none" id="form-copybook">
+        <div class="row h-100 justify-content-center align-items-center">
+            <div class="col-10 col-md-8 col-lg-6">
+                <!-- Form -->
+                <form action="#" th:action="@{/bookcopy/save}" th:object="${bookcopy}" method="post">
+                    <div class="form-group">
+                        <label for="bookId">ID Carte</label>
+                        <input class="form-control" name="bookId" th:value="${bookId}" id="bookId" readonly/>
+                    </div>
+                    <div class="form-group">
+                        <label for="id">ID Exemplar</label>
+                        <input class="form-control" th:field="*{id}" id="id"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="branchName">Filiala</label>
+                        <input class="form-control" th:field="*{branchName}" id="branchName"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salveaza</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragments/index :: jsfiles"> </div>
 </body>
 </html>

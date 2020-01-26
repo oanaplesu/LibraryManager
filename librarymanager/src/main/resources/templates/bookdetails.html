@@ -36,7 +36,18 @@
                 <b><span>Numar de pagini: </span></b>
                 <span th:text="${book.nrPages}"></span>
             </div>
+            <div>
+                <b>Disponibilitate:</b>
+                <div th:each="stat: ${stats}" class="col mb-3">
+                    <span th:text="${'Filiala ' + stat.getBranchName() + ': '}"></span>
+                    <span th:text="${stat.getNrAvailable() + ' exemplare din '}"></span>
+                    <span th:text="${stat.getNrTotal() + ' disponibile'}"></span>
+                </div>
+            </div>
             <div style="margin-top: 15px">
+                <a th:href="@{/bookcopy/(bookId=${book.id})}">
+                    <button type="button" class="btn btn-outline-primary btn-lg" style="margin-right: 10px">Vezi exemplare</button>
+                </a>
                 <a th:href="@{/book/edit/{id}(id=${book.id})}">
                     <button type="button" class="btn btn-outline-warning btn-lg" style="margin-right: 10px">Editeaza</button>
                 </a>

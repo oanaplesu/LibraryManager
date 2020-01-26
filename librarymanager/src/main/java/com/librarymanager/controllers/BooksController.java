@@ -1,11 +1,15 @@
 package com.librarymanager.controllers;
 
 import com.librarymanager.entities.Book;
+import com.librarymanager.entities.BookCopy;
+import com.librarymanager.misc.BookCopyStats;
 import com.librarymanager.misc.BookSpecification;
 import com.librarymanager.misc.SearchCriteria;
+import com.librarymanager.services.BookCopyService;
 import com.librarymanager.services.BookService;
 import com.librarymanager.services.StorageService;
 import com.librarymanager.storage.StorageFileNotFoundException;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -28,6 +32,9 @@ import java.util.Optional;
 public class BooksController {
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private BookCopyService bookCopyService;
 
     @Autowired
     private StorageService storageService;
@@ -102,6 +109,9 @@ public class BooksController {
     public String showBookDetails(@PathVariable long id, Model model) {
         Book book = bookService.get(id);
         model.addAttribute("book", book);
+
+        List<BookCopyStats> bookCopyStats = bookCopyService.getBookCopyStatsForBookId(id);
+        model.addAttribute("stats", bookCopyStats);
         return "bookdetails";
     }
 
@@ -131,4 +141,6 @@ public class BooksController {
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
         return ResponseEntity.notFound().build();
     }
+
+
 }

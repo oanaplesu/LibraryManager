@@ -38,7 +38,8 @@
 <div class="row h-100 justify-content-center align-items-center card-loan-container">
     <div class="col-10 col-md-8 col-lg-6">
         <h2 th:text="${'Imprumuturi curente:  ' + loanListNotReturned.size()}"></h2>
-        <div th:each="loan: ${loanListNotReturned}" th:with="maxReturnDate=${loan.loanDate.plusMonths(1)}" class="card bg-light"  th:classappend="${maxReturnDate.compareTo(#temporals.createNow()) < 0} ? 'border-danger' : 'border-success'" style="margin: 30px">
+        <div th:each="loanPair: ${loanListNotReturned}" th:with="loan=${loanPair.getKey()},struct=${loanPair.getValue()}"
+             th:classappend="${struct.deadlineExceeded ? 'border-danger' : 'border-success'}" class="card bg-light" style="margin: 30px">
             <div class="card-header" th:text="${'ID #' + loan.id}">ID #</div>
             <div class="card-body">
                 <div>
@@ -71,7 +72,11 @@
                 </div>
                 <div>
                     <b><span>Termen limita: </span></b>
-                    <span th:text="${#temporals.format(maxReturnDate, 'dd-MM-yyyy HH:mm')}"></span>
+                    <span th:text="${#temporals.format(struct.deadline, 'dd-MM-yyyy HH:mm')}"></span>
+                </div>
+                <div th:if="${struct.fineValue > 0}">
+                    <b><span>Amenda: </span></b>
+                    <span th:text="${struct.fineValue + ' lei'}"></span>
                 </div>
             </div>
             <div class="card-footer bg-transparent">

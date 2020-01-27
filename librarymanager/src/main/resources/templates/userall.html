@@ -42,9 +42,9 @@
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.firstName}"></td>
         <td>
-            <a th:href="@{/loan/view/(userId=${user.id})}">Imprumuturi</a>
-            <a th:href="@{/user/edit/{id}(id=${user.id})}">Editeaza</a>
-            <a th:href="@{/user/delete/{id}(id=${user.id})}">Sterge</a>
+            <a th:href="@{/loan/view/(userId=${user.id})}" class="user-action"><i class="fas fa-book" title="Imprumuturi"></i></a>
+            <a th:href="@{/user/edit/{id}(id=${user.id})}"  class="user-action"><i class="fas fa-user-edit" title="Editeaza"></i></a>
+            <a th:href="@{/user/delete/{id}(id=${user.id})}" class="user-action"><i class="fas fa-trash-alt" title="Sterge"></i></a>
         </td>
     </tr>
     </tbody>

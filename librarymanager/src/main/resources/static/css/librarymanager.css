@@ -21,3 +21,13 @@
 .card-loan-container {
     margin-right: 0px;
 }
+
+.user-action {
+    margin-right:10px;
+    color: black;
+    font-size: 1.2em;
+}
+
+.user-action:hover {
+    color: blue;
+}

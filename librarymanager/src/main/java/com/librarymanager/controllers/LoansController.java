@@ -103,10 +103,4 @@ public class LoansController {
         loanService.save(loan);
         return "redirect:/loan/view?userId=" + userId;
     }
-
-//    private User getLoggedInUser() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String currentPrincipalName = authentication.getName();
-//        return userService.findByEmail(currentPrincipalName);
-//    }
 }

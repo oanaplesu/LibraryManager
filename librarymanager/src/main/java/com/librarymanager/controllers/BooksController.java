@@ -102,7 +102,7 @@ public class BooksController {
         }
 
         bookService.save(book);
-        return "redirect:/book/all";
+        return "redirect:/book/edit/" + book.getId();
     }
 
     @GetMapping("/view/{id}")

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <div th:replace="fragments/index :: cssfiles"></div>
+    <title th:replace="fragments/index :: title"></title>
+</head>
+<body>
+<nav th:replace="fragments/index :: navbar" > </nav>
+
+<div class="container h-100" style="margin-top: 30px; margin-bottom: 30px; font-size: 15pt">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-10 col-md-8 col-lg-6">
+            <div>
+                <b><span>Email: </span></b>
+                <span th:text="${user.email}"></span>
+            </div>
+            <div>
+                <b><span>Nume: </span></b>
+                <span th:text="${user.lastName}"></span>
+            </div>
+            <div>
+                <b><span>Prenume: </span></b>
+                <span th:text="${user.firstName}"></span>
+            </div>
+            <div>
+                <b><span>CNP: </span></b>
+                <span th:text="${user.CNP}"></span>
+            </div>
+            <div>
+                <b><span>Telefon: </span></b>
+                <span th:text="${user.phone}"></span>
+            </div>
+            <div>
+                <b><span>Adresa: </span></b>
+                <span th:text="${user.address}"></span>
+
+            </div>
+            <div style="margin-top: 15px">
+                <a th:href="@{/loan/view/(userId=${user.id})}">
+                    <button type="button" class="btn btn-outline-primary btn-lg" style="margin-right: 10px">Vezi imprumuturi</button>
+                </a>
+                <a th:href="@{/user/edit/{id}(id=${user.id})}">
+                    <button type="button" class="btn btn-outline-warning btn-lg">Editeaza</button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/index :: jsfiles"> </div>
+</body>
+</html>

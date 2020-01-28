@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <div th:replace="fragments/index :: cssfiles"></div>
+    <title th:replace="fragments/index :: title"></title>
+</head>
+<body>
+<nav th:replace="fragments/index :: navbar" > </nav>
+
+<div class="container h-100" style="margin-top: 30px; margin-bottom: 30px">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-10 col-md-8 col-lg-6">
+            <!-- Form -->
+            <form action="#" th:action="@{/user/save}" th:object="${user}" method="post">
+                <div class="form-group">
+                    <label for="id">ID User</label>
+                    <input class="form-control disabled-form-input" th:field="*{id}" id="id" readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" th:field="*{email}" id="email"/>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Nume</label>
+                    <input type="text" class="form-control" th:field="*{lastName}" id="lastName"/>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">Prenume</label>
+                    <input type="text" class="form-control" th:field="*{firstName}" id="firstName"/>
+                </div>
+                <div class="form-group">
+                    <label for="CNP">CNP</label>
+                    <input class="form-control" th:field="*{CNP}" id="CNP"/>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon</label>
+                    <input class="form-control" th:field="*{phone}" id="phone"/>
+                </div>
+                <div class="form-group">
+                    <label for="address">Adresa</label>
+                    <input type="text" class="form-control" th:field="*{address}" id="address"/>
+                </div>
+                <div class="form-group">
+                    <label for="address">Rol</label>
+                    <select class="form-control mr-sm-2" id="role" name="role">
+                        <option th:selected="${#lists.contains(rolesStr, 'ROLE_USER')}" value="ROLE_USER">Utilizator</option>
+                        <option th:selected="${#lists.contains(rolesStr, 'ROLE_LIBRARIAN')}" value="ROLE_LIBRARIAN">Bibliotecar</option>
+                        <option th:selected="${#lists.contains(rolesStr, 'ROLE_ADMIN')}" value="ROLE_ADMIN">Administator</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Salveaza</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/index :: jsfiles"> </div>
+</body>
+</html>

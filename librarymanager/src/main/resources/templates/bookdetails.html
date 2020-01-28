@@ -45,13 +45,13 @@
                 </div>
             </div>
             <div style="margin-top: 15px">
-                <a th:href="@{/bookcopy/(bookId=${book.id})}">
+                <a th:href="@{/bookcopy/(bookId=${book.id})}" sec:authorize="hasRole('LIBRARIAN')">
                     <button type="button" class="btn btn-outline-primary btn-lg" style="margin-right: 10px">Vezi exemplare</button>
                 </a>
-                <a th:href="@{/book/edit/{id}(id=${book.id})}">
+                <a th:href="@{/book/edit/{id}(id=${book.id})}" sec:authorize="hasRole('LIBRARIAN')">
                     <button type="button" class="btn btn-outline-warning btn-lg" style="margin-right: 10px">Editeaza</button>
                 </a>
-                <a th:href="@{/book/delete/{id}(id=${book.id})}">
+                <a th:href="@{/book/delete/{id}(id=${book.id})}" sec:authorize="hasRole('LIBRARIAN')">
                     <button type="button" class="btn btn-outline-danger btn-lg">Sterge</button>
                 </a>
             </div>

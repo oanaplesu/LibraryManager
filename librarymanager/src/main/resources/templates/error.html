@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <div th:replace="fragments/index :: cssfiles"></div>
+    <title th:replace="fragments/index :: title"></title>
+</head>
+<body>
+<nav th:replace="fragments/index :: navbar" > </nav>
+
+<th:block th:switch="${type}">
+    <div th:case="'404'">
+        <img th:src="@{/images/404.jpg}" alt="404" class="error-image">
+    </div>
+    <div th:case="'403'">
+        <img th:src="@{/images/403.jpg}" alt="403" class="error-image">
+    </div>
+    <div th:case="'500'">
+        <img th:src="@{/images/500.png}" alt="500" class="error-image">
+    </div>
+    <div th:case="'generic'">
+        <img th:src="@{/images/generic-error.jpg}" alt="unknown error" class="error-image">
+    </div>
+</th:block>
+
+<div th:replace="fragments/index :: jsfiles"> </div>
+</body>
+</html>

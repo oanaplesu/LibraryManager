@@ -31,3 +31,15 @@
 .user-action:hover {
     color: blue;
 }
+
+.error-image {
+    max-height: 550px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.error-message {
+    color:red;
+}

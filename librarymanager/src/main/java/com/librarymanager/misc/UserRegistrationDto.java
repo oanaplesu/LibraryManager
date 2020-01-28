@@ -6,33 +6,39 @@ import javax.validation.constraints.NotEmpty;
 
 
 @FieldMatch.List({
-        @FieldMatch(first = "password", second = "confirmPassword", message = "The password fields must match"),
-        @FieldMatch(first = "email", second = "confirmEmail", message = "The email fields must match")
+        @FieldMatch(first = "password", second = "confirmPassword", message = "Campurile pentru parola nu se potrivesc"),
+        @FieldMatch(first = "email", second = "confirmEmail", message = "Campurile de email nu se potrivesc")
 })
 public class UserRegistrationDto {
 
-    @NotEmpty
+    @NotEmpty(message = "Campul nu poate fi gol")
     private String firstName;
 
-    @NotEmpty
+    @NotEmpty(message = "Campul nu poate fi gol")
     private String lastName;
 
-    @NotEmpty
+    @NotEmpty(message = "Campul nu poate fi gol")
     private String password;
 
-    @NotEmpty
+    @NotEmpty(message = "Campul nu poate fi gol")
     private String confirmPassword;
 
-    @Email
-    @NotEmpty
+    @Email(message = "Email invalid")
+    @NotEmpty(message = "Campul nu poate fi gol")
     private String email;
 
-    @Email
-    @NotEmpty
+    @Email(message = "Email invalid")
+    @NotEmpty(message = "Campul nu poate fi gol")
     private String confirmEmail;
 
-    @AssertTrue
-    private Boolean terms;
+    @NotEmpty(message = "Campul nu poate fi gol")
+    private String CNP;
+
+    @NotEmpty(message = "Campul nu poate fi gol")
+    private String phone;
+
+    @NotEmpty(message = "Campul nu poate fi gol")
+    private String address;
 
     public String getFirstName() {
         return firstName;
@@ -82,11 +88,27 @@ public class UserRegistrationDto {
         this.confirmEmail = confirmEmail;
     }
 
-    public Boolean getTerms() {
-        return terms;
+    public String getCNP() {
+        return CNP;
     }
 
-    public void setTerms(Boolean terms) {
-        this.terms = terms;
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setCNP(String CNP) {
+        this.CNP = CNP;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

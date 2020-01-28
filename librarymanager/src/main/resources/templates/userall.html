@@ -43,8 +43,8 @@
         <td th:text="${user.firstName}"></td>
         <td>
             <a th:href="@{/loan/view/(userId=${user.id})}" class="user-action"><i class="fas fa-book" title="Imprumuturi"></i></a>
-            <a th:href="@{/user/edit/{id}(id=${user.id})}"  class="user-action"><i class="fas fa-user-edit" title="Editeaza"></i></a>
-            <a th:href="@{/user/delete/{id}(id=${user.id})}" class="user-action"><i class="fas fa-trash-alt" title="Sterge"></i></a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/user/edit/{id}(id=${user.id})}"  class="user-action"><i class="fas fa-user-edit" title="Editeaza" sec:authorize="hasRole('ADMIN')"></i></a>
+            <a sec:authorize="hasRole('ADMIN')" th:href="@{/user/delete/{id}(id=${user.id})}" class="user-action"><i class="fas fa-trash-alt" title="Sterge" sec:authorize="hasRole('ADMIN')"></i></a>
         </td>
     </tr>
     </tbody>

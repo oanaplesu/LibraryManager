@@ -12,56 +12,67 @@
 
 <nav th:replace="fragments/index :: navbar" > </nav>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+<div class="container h-100" style="margin-top: 30px; margin-bottom: 30px;">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-10 col-md-8 col-lg-6">
 
             <div th:if="${param.success}">
-                <div class="alert alert-info">You've successfully registered to our awesome app!</div>
+                <div class="alert alert-info">Te-ai inregistrat cu success!</div>
             </div>
 
-            <h1>Registration</h1>
+            <h1>Creaza cont nou</h1>
             <form th:action="@{/registration}" th:object="${user}" method="post">
-                <p class="error-message" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation error
-                </p>
+                <p class="error-message" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.errors('global')}" th:text="${error}"></p>
 
-                <div class="form-group" th:classappend="${#fields.hasErrors('firstName')}? 'has-error':''">
-                    <label for="firstName" class="control-label">First name</label> <input id="firstName" class="form-control" th:field="*{firstName}" />
-                    <p class="error-message" th:each="error: ${#fields.errors('firstName')}" th:text="${error}">Validation error</p>
+                <div class="form-group">
+                    <label for="firstName" class="control-label">Prenume</label>
+                    <input id="firstName" class="form-control" th:field="*{firstName}" th:classappend="${#fields.hasErrors('firstName')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error: ${#fields.errors('firstName')}" th:text="${error}"></p>
                 </div>
-                <div class="form-group" th:classappend="${#fields.hasErrors('lastName')}? 'has-error':''">
-                    <label for="lastName" class="control-label">Last name</label> <input id="lastName" class="form-control" th:field="*{lastName}" />
-                    <p class="error-message" th:each="error : ${#fields.errors('lastName')}" th:text="${error}">Validation error</p>
+                <div class="form-group">
+                    <label for="lastName" class="control-label">Nume</label>
+                    <input id="lastName" class="form-control" th:field="*{lastName}" th:classappend="${#fields.hasErrors('lastName')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('lastName')}" th:text="${error}"></p>
                 </div>
-                <div class="form-group" th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
-                    <label for="email" class="control-label">E-mail</label> <input id="email" class="form-control" th:field="*{email}" />
-                    <p class="error-message" th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation error
-                    </p>
-                </div>
-                <div class="form-group" th:classappend="${#fields.hasErrors('confirmEmail')}? 'has-error':''">
-                    <label for="confirmEmail" class="control-label">Confirm
-                        e-mail</label> <input id="confirmEmail" class="form-control" th:field="*{confirmEmail}" />
-                    <p class="error-message" th:each="error : ${#fields.errors('confirmEmail')}" th:text="${error}">Validation error</p>
-                </div>
-                <div class="form-group" th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
-                    <label for="password" class="control-label">Password</label> <input id="password" class="form-control" type="password" th:field="*{password}" />
-                    <p class="error-message" th:each="error : ${#fields.errors('password')}" th:text="${error}">Validation error</p>
-                </div>
-                <div class="form-group" th:classappend="${#fields.hasErrors('confirmPassword')}? 'has-error':''">
-                    <label for="confirmPassword" class="control-label">Confirm
-                        password</label> <input id="confirmPassword" class="form-control" type="password" th:field="*{confirmPassword}" />
-                    <p class="error-message" th:each="error : ${#fields.errors('confirmPassword')}" th:text="${error}">Validation error</p>
-                </div>
-                <div class="form-group" th:classappend="${#fields.hasErrors('terms')}? 'has-error':''">
-                    <input id="terms" type="checkbox" th:field="*{terms}" /> <label class="control-label" for="terms"> I agree with the <a
-                        href="#">terms and conditions</a> for Registration.
-                </label>
-                    <p class="error-message" th:each="error : ${#fields.errors('terms')}" th:text="${error}">Validation error
+                <div class="form-group">
+                    <label for="email" class="control-label">Email</label>
+                    <input id="email" class="form-control" th:field="*{email}" th:classappend="${#fields.hasErrors('email')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('email')}" th:text="${error}">
                     </p>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success">Register</button>
-                    <span>Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
+                    <label for="confirmEmail" class="control-label">Confirma email</label>
+                    <input id="confirmEmail" class="form-control" th:field="*{confirmEmail}" th:classappend="${#fields.hasErrors('confirmEmail')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('confirmEmail')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="control-label">Parola</label>
+                    <input id="password" class="form-control" type="password" th:field="*{password}" th:classappend="${#fields.hasErrors('password')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('password')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" class="control-label">Confirma parola</label>
+                    <input id="confirmPassword" class="form-control" type="password" th:field="*{confirmPassword}" th:classappend="${#fields.hasErrors('confirmPassword')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('confirmPassword')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="confirmEmail" class="control-label">CNP</label>
+                    <input id="CNP" class="form-control" th:field="*{CNP}" th:classappend="${#fields.hasErrors('CNP')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('CNP')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="control-label">Telefon</label>
+                    <input id="phone" class="form-control" th:field="*{phone}" th:classappend="${#fields.hasErrors('phone')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('phone')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="address" class="control-label">Adresa</label>
+                    <input id="address" class="form-control" th:field="*{address}" th:classappend="${#fields.hasErrors('address')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('phone')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Inscrie-te</button>
+                    <span>Ai deja cont? <a href="/" th:href="@{/login}">Logheaza-te aici</a></span>
                 </div>
             </form>
         </div>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <div th:replace="fragments/index :: cssfiles"></div>
+    <title th:replace="fragments/index :: title"></title>
+</head>
+<body>
+<nav th:replace="fragments/index :: navbar" > </nav>
+
+<div class="container h-100 edit-book-container" style="margin-top: 30px; margin-bottom: 30px">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-10 col-md-8 col-lg-6">
+            <h1>Editeaza carte</h1>
+            <!-- Form -->
+            <form action="#" th:action="@{/book/edit/{id}(id=book.id)}" th:object="${book}" enctype="multipart/form-data" method="post">
+                <p class="error-message" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.errors('global')}" th:text="${error}"></p>
+
+                <div class="form-group">
+                    <label for="id">ID Carte</label>
+                    <input class="form-control" th:field="*{id}" id="id"/>
+                </div>
+                <div class="form-group">
+                    <label for="title">Titlu</label>
+                    <input class="form-control" th:field="*{title}" id="title" th:classappend="${#fields.hasErrors('title')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('title')}" th:text="${error}"></p>
+
+                </div>
+                <div class="form-group">
+                    <label for="author">Autor</label>
+                    <input class="form-control" th:field="*{author}" id="author" th:classappend="${#fields.hasErrors('author')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('author')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="nrPages">Numar pagini</label>
+                    <input class="form-control" th:field="*{nrPages}" id="nrPages" th:classappend="${#fields.hasErrors('nrPages')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('nrPages')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="publishingHouse">Editura</label>
+                    <input type="text" class="form-control" th:field="*{publishingHouse}" id="publishingHouse" th:classappend="${#fields.hasErrors('publishingHouse')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('publishingHouse')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="year">An publicare</label>
+                    <input type="text" class="form-control" th:field="*{year}" id="year" th:classappend="${#fields.hasErrors('year')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('year')}" th:text="${error}"></p>
+                </div>
+                <div class="form-group">
+                    <label for="image">Imagine</label>
+                    <input type="file" name="file" class="form-control-file" id="image" th:classappend="${#fields.hasErrors('file')}? 'is-invalid':''"/>
+                    <p class="error-message" th:each="error : ${#fields.errors('file')}" th:text="${error}"></p>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Salveaza</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/index :: jsfiles"> </div>
+</body>
+</html>

@@ -14,8 +14,9 @@
     <div class="container h-100" style="margin-top: 30px">
         <div class="row h-100 justify-content-center align-items-center">
             <div class="col-10 col-md-8 col-lg-6">
+                <h1>Adauga carte noua</h1>
                 <!-- Form -->
-    <form action="#" th:action="@{/book/save}" th:object="${book}" enctype="multipart/form-data" method="post">
+    <form action="#" th:action="@{/book/new}" th:object="${book}" enctype="multipart/form-data" method="post">
         <div class="form-group">
             <label for="title">Titlu</label>
             <input class="form-control" th:field="*{title}" id="title"/>

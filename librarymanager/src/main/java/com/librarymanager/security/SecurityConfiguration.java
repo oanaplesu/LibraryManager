@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/images/**",
                         "/webjars/**").permitAll()
-                .antMatchers("/book/edit/**", "/book/save/**", "/book/delete/**").hasRole("LIBRARIAN")
+                .antMatchers("/book/new", "/book/edit/**", "/book/save/**", "/book/delete/**").hasRole("LIBRARIAN")
                 .antMatchers("/user/all/**").hasRole("LIBRARIAN")
                 .antMatchers("/user/delete/**" ).hasRole("ADMIN")
                 .antMatchers("/bookcopy/**").hasRole("LIBRARIAN")
@@ -37,6 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                     .formLogin()
                     .loginPage("/login")
+                    .defaultSuccessUrl("/")
                     .permitAll()
                 .and()
                     .logout()

@@ -20,7 +20,7 @@
                 <div class="alert alert-info">Te-ai inregistrat cu success!</div>
             </div>
 
-            <h1>Creaza cont nou</h1>
+            <h1>Creeaza cont nou</h1>
             <form th:action="@{/registration}" th:object="${user}" method="post">
                 <p class="error-message" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.errors('global')}" th:text="${error}"></p>
 
@@ -56,11 +56,6 @@
                     <p class="error-message" th:each="error : ${#fields.errors('confirmPassword')}" th:text="${error}"></p>
                 </div>
                 <div class="form-group">
-                    <label for="confirmEmail" class="control-label">CNP</label>
-                    <input id="CNP" class="form-control" th:field="*{CNP}" th:classappend="${#fields.hasErrors('CNP')}? 'is-invalid':''"/>
-                    <p class="error-message" th:each="error : ${#fields.errors('CNP')}" th:text="${error}"></p>
-                </div>
-                <div class="form-group">
                     <label for="phone" class="control-label">Telefon</label>
                     <input id="phone" class="form-control" th:field="*{phone}" th:classappend="${#fields.hasErrors('phone')}? 'is-invalid':''"/>
                     <p class="error-message" th:each="error : ${#fields.errors('phone')}" th:text="${error}"></p>
@@ -68,7 +63,7 @@
                 <div class="form-group">
                     <label for="address" class="control-label">Adresa</label>
                     <input id="address" class="form-control" th:field="*{address}" th:classappend="${#fields.hasErrors('address')}? 'is-invalid':''"/>
-                    <p class="error-message" th:each="error : ${#fields.errors('phone')}" th:text="${error}"></p>
+                    <p class="error-message" th:each="error : ${#fields.errors('address')}" th:text="${error}"></p>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-success">Inscrie-te</button>

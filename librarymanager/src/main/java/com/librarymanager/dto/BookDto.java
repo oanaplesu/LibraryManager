@@ -1,4 +1,6 @@
-package com.librarymanager.misc;
+package com.librarymanager.dto;
+
+import com.librarymanager.misc.FieldMatch;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
@@ -30,9 +32,6 @@ public class UserRegistrationDto {
     @Email(message = "Email invalid")
     @NotEmpty(message = "Campul nu poate fi gol")
     private String confirmEmail;
-
-    @NotEmpty(message = "Campul nu poate fi gol")
-    private String CNP;
 
     @NotEmpty(message = "Campul nu poate fi gol")
     private String phone;
@@ -88,20 +87,12 @@ public class UserRegistrationDto {
         this.confirmEmail = confirmEmail;
     }
 
-    public String getCNP() {
-        return CNP;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public String getAddress() {
         return address;
-    }
-
-    public void setCNP(String CNP) {
-        this.CNP = CNP;
     }
 
     public void setPhone(String phone) {

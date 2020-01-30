@@ -16,18 +16,17 @@
         <div class="col-10 col-md-8 col-lg-6">
             <h1>Editeaza carte</h1>
             <!-- Form -->
-            <form action="#" th:action="@{/book/edit/{id}(id=book.id)}" th:object="${book}" enctype="multipart/form-data" method="post">
+            <form action="#" th:action="@{/book/edit/{id}(id=${book.id})}" th:object="${book}" enctype="multipart/form-data" method="post">
                 <p class="error-message" th:if="${#fields.hasGlobalErrors()}" th:each="error : ${#fields.errors('global')}" th:text="${error}"></p>
 
                 <div class="form-group">
                     <label for="id">ID Carte</label>
-                    <input class="form-control" th:field="*{id}" id="id"/>
+                    <input class="form-control disabled-form-input" th:field="*{id}" id="id" readonly/>
                 </div>
                 <div class="form-group">
                     <label for="title">Titlu</label>
                     <input class="form-control" th:field="*{title}" id="title" th:classappend="${#fields.hasErrors('title')}? 'is-invalid':''"/>
                     <p class="error-message" th:each="error : ${#fields.errors('title')}" th:text="${error}"></p>
-
                 </div>
                 <div class="form-group">
                     <label for="author">Autor</label>
@@ -51,8 +50,7 @@
                 </div>
                 <div class="form-group">
                     <label for="image">Imagine</label>
-                    <input type="file" name="file" class="form-control-file" id="image" th:classappend="${#fields.hasErrors('file')}? 'is-invalid':''"/>
-                    <p class="error-message" th:each="error : ${#fields.errors('file')}" th:text="${error}"></p>
+                    <input type="file" name="file" class="form-control-file" id="image" accept=".jpg,.gif,.png,.jpeg"/>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg">Salveaza</button>
             </form>

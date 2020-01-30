@@ -11,6 +11,9 @@
 <body>
 <nav th:replace="fragments/index :: navbar" > </nav>
 
+<div th:if="${param.deleteSuccess}">
+    <div class="alert alert-info" style="margin: 10px 50px">Utilizatorul a fost sters cu succes</div>
+</div>
 <form style="margin-left:30px; margin-right:30px" action="#" th:action="@{/user/all}" method="get">
     <div class="form-row align-items-center">
         <div class="col-auto my-1">

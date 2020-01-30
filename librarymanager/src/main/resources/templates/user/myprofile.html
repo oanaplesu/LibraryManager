@@ -27,10 +27,6 @@
                 <span th:text="${user.firstName}"></span>
             </div>
             <div>
-                <b><span>CNP: </span></b>
-                <span th:text="${user.CNP}"></span>
-            </div>
-            <div>
                 <b><span>Telefon: </span></b>
                 <span th:text="${user.phone}"></span>
             </div>
@@ -40,10 +36,10 @@
 
             </div>
             <div style="margin-top: 15px">
-                <a th:href="@{/loan/view/(userId=${user.id})}">
+                <a th:href="@{/myprofile/loans/}">
                     <button type="button" class="btn btn-outline-primary btn-lg" style="margin-right: 10px">Vezi imprumuturi</button>
                 </a>
-                <a th:href="@{/user/edit/{id}(id=${user.id})}">
+                <a th:href="@{/myprofile/edit/}">
                     <button type="button" class="btn btn-outline-warning btn-lg">Editeaza</button>
                 </a>
             </div>

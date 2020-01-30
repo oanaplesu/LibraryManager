@@ -3,7 +3,7 @@ package com.librarymanager.controllers;
 import javax.validation.Valid;
 
 import com.librarymanager.entities.User;
-import com.librarymanager.misc.UserRegistrationDto;
+import com.librarymanager.dto.UserRegistrationDto;
 import com.librarymanager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,12 +29,12 @@ public class UserRegistrationController {
 
     @GetMapping
     public String showRegistrationForm(Model model) {
-        return "registration";
+        return "user/registration";
     }
 
     @PostMapping
     public String registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDto userDto,
-                                      BindingResult result) {
+                                      BindingResult result                  ) {
 
         User existing = userService.findByEmail(userDto.getEmail());
         if (existing != null) {
@@ -42,7 +42,7 @@ public class UserRegistrationController {
         }
 
         if (result.hasErrors()) {
-            return "registration";
+            return "user/registration";
         }
         userService.save(userDto);
         return "redirect:/registration?success";

@@ -13,21 +13,21 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.nio.file.attribute.UserPrincipal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.SortedMap;
+import java.util.*;
 
 
 import java.time.temporal.ChronoUnit;
@@ -48,59 +48,60 @@ public class LoansController {
 
     @GetMapping("/view")
     public String listLoansForUserId(@RequestParam Long userId, Model model) {
-        List<Loan> loanListNotReturned = loanService.filterByUserIdNotReturned(userId);
-        List<Loan> loanListReturned = loanService.filterByUserIdReturned(userId);
-        ArrayList<Pair<Loan, NotReturnedStruct>> newList = new ArrayList<>();
-
-        for(Loan loan: loanListNotReturned) {
-            NotReturnedStruct struct = new NotReturnedStruct();
-            struct.setDeadline(loan.getLoanDate().plusMonths(1));
-            struct.setDeadlineExceeded(struct.getDeadline().toLocalDate().isBefore(LocalDate.now()));
-            if(struct.isDeadlineExceeded()) {
-                long nrDaysDelay = struct.getDeadline().until(LocalDateTime.now(), ChronoUnit.DAYS) + 1;
-                long FINE_PER_DAY = 1;
-                long totalFineValue = FINE_PER_DAY * nrDaysDelay;
-                struct.setFineValue(totalFineValue);
-            } else {
-                struct.setFineValue(0);
-            }
-            newList.add(new ImmutablePair<>(loan, struct));
-        }
-
+        List<Loan> loanReturnedList = loanService.filterByUserIdReturned(userId);
+        List<Pair<Loan, NotReturnedStruct>> loanNotReturnedList = loanService.filterByUserIdNotReturned(userId);
 
         model.addAttribute("userId", userId);
-        model.addAttribute("loanListNotReturned", newList);
-        model.addAttribute("loanListReturned", loanListReturned);
-        return "loanall";
+        model.addAttribute("loanNotReturnedList", loanNotReturnedList);
+        model.addAttribute("loanReturnedList", loanReturnedList);
+        return "loan/all";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteLoan(@PathVariable long id, @RequestParam long userId) {
+        getLoanOrThrow404(id);
         loanService.delete(id);
-        return "redirect:/loan/view?userId=" + userId;
+        return "redirect:/loan/view?userId=" + userId + "&deleteSuccess";
     }
 
     @PostMapping("/new")
-    public String newLoan(@RequestParam long userId, @RequestParam String bookcopyId) {
-        BookCopy bookcopy = bookcopyService.get(bookcopyId);
-        User user = userService.get(userId);
+    public String newLoan(@RequestParam long userId, @RequestParam String bookcopyId,
+                          Model model) {
+        Optional<BookCopy> bookCopy = bookcopyService.get(bookcopyId);
+        if (bookCopy.isEmpty()) {
+            return "redirect:/loan/view?userId=" + userId + "&showForm&showError";
+        }
+
+        Optional<User> user = userService.get(userId);
+        if(user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "User-ul cu id-ul mentionat nu exista");
+        }
 
         Loan loan = new Loan();
-        loan.setUser(user);
-        loan.setBookcopy(bookcopy);
+        loan.setUser(user.get());
+        loan.setBookcopy(bookCopy.get());
         loan.setNotReturned(false);
         loan.setNotReturned(true);
         loanService.save(loan);
 
-        return "redirect:/loan/view?userId="+ userId;
+        return "redirect:/loan/view?userId="+ userId + "&addSuccess";
     }
 
     @GetMapping("/mark_returned/{id}")
     private String markAsReturned(@PathVariable long id, @RequestParam long userId) {
-        Loan loan = loanService.get(id);
+        Loan loan = getLoanOrThrow404(id);
         loan.setNotReturned(false);
         loan.setReturnedDate(LocalDateTime.now());
         loanService.save(loan);
-        return "redirect:/loan/view?userId=" + userId;
+        return "redirect:/loan/view?userId=" + userId + "&markSuccess";
+    }
+
+    private Loan getLoanOrThrow404(Long id) {
+        Optional<Loan> loan =  loanService.get(id);
+        if(loan.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nu s-a gasit resursa ceruta");
+        }
+        return loan.get();
     }
 }

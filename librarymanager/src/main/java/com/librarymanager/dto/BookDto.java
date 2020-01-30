@@ -2,104 +2,73 @@ package com.librarymanager.dto;
 
 import com.librarymanager.misc.FieldMatch;
 
-import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.validation.constraints.*;
 
-
-@FieldMatch.List({
-        @FieldMatch(first = "password", second = "confirmPassword", message = "Campurile pentru parola nu se potrivesc"),
-        @FieldMatch(first = "email", second = "confirmEmail", message = "Campurile de email nu se potrivesc")
-})
-public class UserRegistrationDto {
+public class BookDto {
+    private Long id;
 
     @NotEmpty(message = "Campul nu poate fi gol")
-    private String firstName;
+    private String title;
 
     @NotEmpty(message = "Campul nu poate fi gol")
-    private String lastName;
+    private String author;
+
+    @Min(value = 0, message = "Numarul de pagini nu este valid")
+    private Integer nrPages;
 
     @NotEmpty(message = "Campul nu poate fi gol")
-    private String password;
+    private String publishingHouse;
 
+    @Digits(integer = 4,fraction = 0, message = "Introduceti un an valid")
     @NotEmpty(message = "Campul nu poate fi gol")
-    private String confirmPassword;
+    private String year;
 
-    @Email(message = "Email invalid")
-    @NotEmpty(message = "Campul nu poate fi gol")
-    private String email;
-
-    @Email(message = "Email invalid")
-    @NotEmpty(message = "Campul nu poate fi gol")
-    private String confirmEmail;
-
-    @NotEmpty(message = "Campul nu poate fi gol")
-    private String phone;
-
-    @NotEmpty(message = "Campul nu poate fi gol")
-    private String address;
-
-    public String getFirstName() {
-        return firstName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getAuthor() {
+        return author;
     }
 
-    public String getLastName() {
-        return lastName;
+    public Integer getNrPages() {
+        return nrPages;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getPublishingHouse() {
+        return publishingHouse;
     }
 
-    public String getPassword() {
-        return password;
+    public String getYear() {
+        return year;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void setNrPages(Integer nrPages) {
+        this.nrPages = nrPages;
     }
 
-    public String getEmail() {
-        return email;
+    public void setPublishingHouse(String publishingHouse) {
+        this.publishingHouse = publishingHouse;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setYear(String year) {
+        this.year = year;
     }
 
-    public String getConfirmEmail() {
-        return confirmEmail;
+    public Long getId() {
+        return id;
     }
 
-    public void setConfirmEmail(String confirmEmail) {
-        this.confirmEmail = confirmEmail;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

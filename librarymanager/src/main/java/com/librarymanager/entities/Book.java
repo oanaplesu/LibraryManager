@@ -1,9 +1,9 @@
 package com.librarymanager.entities;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.time.LocalDateTime;
 
 @Entity
 public class Book {
@@ -16,6 +16,8 @@ public class Book {
     private String publishingHouse;
     private String year;
     private String imagePath;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     public Book() {
     }
@@ -74,5 +76,13 @@ public class Book {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

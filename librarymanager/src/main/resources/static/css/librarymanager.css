@@ -43,3 +43,7 @@
 .error-message {
     color:red;
 }
+
+.no-display {
+    display: none;
+}

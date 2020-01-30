@@ -1,29 +1,27 @@
 package com.librarymanager.controllers;
 
+import com.librarymanager.dto.BookDto;
 import com.librarymanager.entities.Book;
-import com.librarymanager.entities.BookCopy;
 import com.librarymanager.misc.BookCopyStats;
-import com.librarymanager.misc.BookSpecification;
-import com.librarymanager.misc.SearchCriteria;
 import com.librarymanager.services.BookCopyService;
 import com.librarymanager.services.BookService;
 import com.librarymanager.services.StorageService;
+import com.librarymanager.storage.StorageException;
 import com.librarymanager.storage.StorageFileNotFoundException;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,86 +44,97 @@ public class BooksController {
                                @RequestParam(required = false) String author,
                                @RequestParam(required = false) String year,
                                Model model) {
-        List<BookSpecification> filters = new ArrayList<>();
-
-        if(title != null) {
-            filters.add(new BookSpecification(new SearchCriteria("title", ":", title)));
-        }
-
-        if(author != null) {
-            filters.add(new BookSpecification(new SearchCriteria("author", ":", author)));
-        }
-
-        if(year != null) {
-            filters.add(new BookSpecification(new SearchCriteria("year", ":", year)));
-        }
-
-        Specification<Book> spec = null;
-
-        for (BookSpecification filter: filters) {
-            spec = ((spec == null) ? Specification.where(filter) : spec.and(filter));
-        }
-
-        PageRequest pageable = PageRequest.of(page - 1 , 10);
-        Page<Book> booksPage;
-
-        if(spec != null) {
-            booksPage = bookService.filterAndPaginate(spec, pageable);
-        } else {
-            booksPage = bookService.paginate(pageable);
-        }
+        Page<Book> booksPage = bookService.filterAndPaginate(page, title, author, year);
 
         model.addAttribute("booksList", booksPage.getContent());
         model.addAttribute("page", page);
         model.addAttribute("isFirstPage", booksPage.isFirst());
         model.addAttribute("isLastPage", booksPage.isLast());
-        return "allbooks";
+        return "book/all";
     }
 
     @GetMapping("/new")
-    public String addNewBook(Model model) {
+    public String showNewBook(Model model) {
         Book book = new Book();
         model.addAttribute("book", book);
-        return "newbook";
+        return "book/new";
     }
 
-    @PostMapping("/save")
-    public String saveBook(@ModelAttribute("book") Book book,
-                         @RequestParam(required = false, defaultValue = "false") boolean keepImage,
-                         @RequestParam(required = false) MultipartFile file) {
-        if(keepImage) {
-            String oldImagePath = bookService.get(book.getId()).getImagePath();
-            book.setImagePath(oldImagePath);
-        } else if(!file.isEmpty()) {
-            storageService.store(file);
-            book.setImagePath(file.getOriginalFilename());
+    @PostMapping("/new")
+    public String saveNewBook(@ModelAttribute("book") @Valid BookDto bookDto,
+                              BindingResult result,
+                             @RequestParam(required = false) MultipartFile file) {
+        if(result.hasErrors()) {
+            return "book/new";
         }
 
-        bookService.save(book);
-        return "redirect:/book/edit/" + book.getId();
+        try {
+            String imagePath = "";
+
+            if(!file.isEmpty()) {
+                storageService.store(file);
+                imagePath = file.getOriginalFilename();
+            }
+
+            bookService.save(bookDto, imagePath);
+        } catch (StorageException e) {
+            result.reject("file", "Incarcati o imagine valida");
+            return "book/new";
+        }
+
+        return "redirect:/book/all?addSuccess";
+    }
+
+    @RequestMapping("/edit/{id}")
+    public String showEditBook(@PathVariable long id, Model model) {
+        Book book = getBookOrThrow404(id);
+        model.addAttribute("book", book );
+        return "book/edit";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String saveEditBook(@ModelAttribute("book") @Valid BookDto bookDto,
+                               BindingResult result,
+                               @PathVariable Long id,
+                               @RequestParam(required = false) MultipartFile file) {
+        Book book = getBookOrThrow404(id);
+
+        if(result.hasErrors()) {
+            return "book/edit";
+        }
+
+        try {
+            String imagePath = "";
+
+            if(!file.isEmpty()) {
+                storageService.store(file);
+                imagePath = file.getOriginalFilename();
+            }
+
+            bookService.saveEditedBook(book, bookDto, imagePath);
+        } catch (StorageException e) {
+            result.reject("file", "Incarcati o imagine valida");
+            return "redirect:/book/edit" + id;
+        }
+
+        return "redirect:/book/all?editSuccess";
     }
 
     @GetMapping("/view/{id}")
     public String showBookDetails(@PathVariable long id, Model model) {
-        Book book = bookService.get(id);
+        Book book = getBookOrThrow404(id);
         model.addAttribute("book", book);
 
         List<BookCopyStats> bookCopyStats = bookCopyService.getBookCopyStatsForBookId(id);
         model.addAttribute("stats", bookCopyStats);
-        return "bookdetails";
+        return "book/details";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable long id, Model model) {
+        getBookOrThrow404(id);
         bookService.delete(id);
-        return "redirect:/book/all";
-    }
-
-    @RequestMapping("/edit/{id}")
-    public String editBook(@PathVariable long id, Model model) {
-        Book book = bookService.get(id);
-        model.addAttribute("book", book);
-        return "bookedit";
+        return "redirect:/book/all?deleteSuccess";
     }
 
     @GetMapping("/files/{filename:.+}")
@@ -142,5 +151,11 @@ public class BooksController {
         return ResponseEntity.notFound().build();
     }
 
-
+    private Book getBookOrThrow404(Long id) {
+        Optional<Book> book = bookService.get(id);
+        if(book.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nu s-a gasit resursa ceruta");
+        }
+        return book.get();
+    }
 }

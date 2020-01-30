@@ -30,27 +30,21 @@
             <div class="col-sm-2 my-1">
                 <input type="text" class="form-control" id="publishing-year" placeholder="An aparitie" name="year">
             </div>
-<!--            <div class="col-auto my-1">-->
-<!--             <p style="margin-bottom: 0px">Ordoneaza: </p>-->
-<!--            </div>-->
-<!--            <div class="col-auto my-1">-->
-<!--                <select class="form-control mr-sm-2" id="order-by">-->
-<!--                    <option selected value="1">Titlu</option>-->
-<!--                    <option value="2">Autor</option>-->
-<!--                    <option value="3">An aparitie</option>-->
-<!--                </select>-->
-<!--            </div>-->
-<!--            <div class="col-auto my-1">-->
-<!--                <select class="form-control mr-sm-2" id="order-direction">-->
-<!--                    <option selected value="1">Asc</option>-->
-<!--                    <option value="2">Desc</option>-->
-<!--                </select>-->
-<!--            </div>-->
             <div class="col-auto my-1">
                 <button type="submit" class="btn btn-dark">Cauta</button>
             </div>
         </div>
     </form>
+
+    <div th:if="${param.addSuccess}">
+        <div class="alert alert-info" style="margin: 10px 50px">Cartea a fost adaugata cu succes</div>
+    </div>
+    <div th:if="${param.editSuccess}">
+        <div class="alert alert-info" style="margin: 10px 50px">Cartea a fost editata cu succes</div>
+    </div>
+    <div th:if="${param.deleteSuccess}">
+        <div class="alert alert-info" style="margin: 10px 50px">Cartea a fost sters cu succes</div>
+    </div>
 
     <div class="row row-cols-1 row-cols-md-4" id="card-book-container">
         <div th:each="book: ${booksList}" class="col mb-3">

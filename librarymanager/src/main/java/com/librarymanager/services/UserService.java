@@ -1,28 +1,27 @@
 package com.librarymanager.services;
 
+import com.librarymanager.dto.UserEditDto;
 import com.librarymanager.entities.User;
-import com.librarymanager.misc.UserRegistrationDto;
-import com.librarymanager.repositories.BookRepository;
-import com.librarymanager.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.librarymanager.dto.UserRegistrationDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public interface UserService extends UserDetailsService {
     User findByEmail(String email);
 
-    User save(UserRegistrationDto registration);
-
     public List<User> listAll();
 
-    public void save(User book);
+    public void save(UserRegistrationDto registration);
 
-    public User get(long id);
+    public void saveEditedUser(User user, UserEditDto registration, String role);
+
+    public Optional<User> get(long id);
 
     public void delete(long id);
 

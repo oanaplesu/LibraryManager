@@ -10,7 +10,6 @@ public class User {
     private long id;
     private String email;
     private String password;
-    private String CNP;
     private String phone;
     private String address;
     private String firstName;
@@ -35,10 +34,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getCNP() {
-        return CNP;
     }
 
     public String getPhone() {
@@ -73,10 +68,6 @@ public class User {
         this.password = password;
     }
 
-    public void setCNP(String CNP) {
-        this.CNP = CNP;
-    }
-
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -103,7 +94,6 @@ public class User {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", CNP='" + CNP + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 ", firstName='" + firstName + '\'' +

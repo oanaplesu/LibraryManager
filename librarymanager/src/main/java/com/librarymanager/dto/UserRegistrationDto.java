@@ -11,9 +11,7 @@ import javax.validation.constraints.NotEmpty;
         @FieldMatch(first = "password", second = "confirmPassword", message = "Campurile pentru parola nu se potrivesc"),
         @FieldMatch(first = "email", second = "confirmEmail", message = "Campurile de email nu se potrivesc")
 })
-public class UserDto {
-    private Long id;
-
+public class UserRegistrationDto {
     @NotEmpty(message = "Campul nu poate fi gol")
     private String firstName;
 

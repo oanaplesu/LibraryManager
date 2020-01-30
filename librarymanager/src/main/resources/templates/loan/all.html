@@ -11,15 +11,26 @@
 <body>
 <nav th:replace="fragments/index :: navbar" > </nav>
 
+<div th:if="${param.addSuccess}">
+    <div class="alert alert-info" style="margin: 10px 50px">Imprumutul a fost adaugat cu succes</div>
+</div>
+<div th:if="${param.markSuccess}">
+    <div class="alert alert-info" style="margin: 10px 50px">Imprumutul a fost editat cu succes</div>
+</div>
+
+<div th:if="${param.deleteSuccess}">
+    <div class="alert alert-info" style="margin: 10px 50px">Imprumutul a fost sters cu succes</div>
+</div>
 
 <button  sec:authorize="hasRole('LIBRARIAN')" type="button" class="btn btn-primary btn-lg" style="margin:30px" id="show-form-newloan">
     Adauga Imprumut
     <i class="fa fa-plus"></i>
 </button>
 
-<div sec:authorize="hasRole('LIBRARIAN')" class="container h-100" style="margin-top: 30px; margin-bottom: 30px; display: none" id="form-newloan">
+<div sec:authorize="hasRole('LIBRARIAN')" class="container h-100" style="margin-top: 30px; margin-bottom: 30px" id="form-newloan" th:classappend="${param.showForm}? '':'no-display'">
     <div class="row h-100 justify-content-center align-items-center">
         <div class="col-10 col-md-8 col-lg-6">
+            <p class="error-message" th:if="${param.showError}">Nu exista niciun exemplar cu id-ul specificat</p>
             <!-- Form -->
             <form action="#" th:action="@{/loan/new}" method="post">
                 <div class="form-group">
@@ -38,8 +49,8 @@
 
 <div class="row h-100 justify-content-center align-items-center card-loan-container">
     <div class="col-10 col-md-8 col-lg-6">
-        <h2 th:text="${'Imprumuturi curente:  ' + loanListNotReturned.size()}"></h2>
-        <div th:each="loanPair: ${loanListNotReturned}" th:with="loan=${loanPair.getKey()},struct=${loanPair.getValue()}"
+        <h2 th:text="${'Imprumuturi curente:  ' + loanNotReturnedList.size()}"></h2>
+        <div th:each="loanPair: ${loanNotReturnedList}" th:with="loan=${loanPair.getKey()},struct=${loanPair.getValue()}"
              th:classappend="${struct.deadlineExceeded ? 'border-danger' : 'border-success'}" class="card bg-light" style="margin: 30px">
             <div class="card-header" th:text="${'ID #' + loan.id}">ID #</div>
             <div class="card-body">
@@ -94,8 +105,8 @@
 
 <div class="row h-100 justify-content-center align-items-center card-loan-container">
     <div class="col-10 col-md-8 col-lg-6">
-        <h2 th:text="${'Carti returnate:  ' + loanListReturned.size()}"></h2>
-        <div th:each="loan: ${loanListReturned}" class="card bg-light" style="margin: 30px">
+        <h2 th:text="${'Carti returnate:  ' + loanReturnedList.size()}"></h2>
+        <div th:each="loan: ${loanReturnedList}" class="card bg-light" style="margin: 30px">
             <div class="card-header" th:text="${'ID #' + loan.id}">ID #</div>
             <div class="card-body">
                 <div>

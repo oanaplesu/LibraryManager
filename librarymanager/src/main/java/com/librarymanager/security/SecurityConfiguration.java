@@ -1,4 +1,4 @@
-package com.librarymanager.misc;
+package com.librarymanager.security;
 
 
 import com.librarymanager.services.UserService;
@@ -31,8 +31,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/webjars/**").permitAll()
                 .antMatchers("/book/new", "/book/edit/**", "/book/save/**", "/book/delete/**").hasRole("LIBRARIAN")
                 .antMatchers("/user/all/**").hasRole("LIBRARIAN")
-                .antMatchers("/user/delete/**" ).hasRole("ADMIN")
+                .antMatchers("/user/delete/**", "/user/edit/**" ).hasRole("ADMIN")
                 .antMatchers("/bookcopy/**").hasRole("LIBRARIAN")
+                .antMatchers("/loan/**").hasRole("LIBRARIAN")
                 .anyRequest().authenticated()
                 .and()
                     .formLogin()

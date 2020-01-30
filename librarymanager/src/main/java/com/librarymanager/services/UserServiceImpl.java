@@ -1,15 +1,12 @@
 package com.librarymanager.services;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import com.librarymanager.entities.Book;
+import com.librarymanager.dto.UserEditDto;
 import com.librarymanager.entities.Role;
 import com.librarymanager.entities.User;
-import com.librarymanager.misc.UserRegistrationDto;
+import com.librarymanager.dto.UserRegistrationDto;
 import com.librarymanager.repositories.RoleRepository;
 import com.librarymanager.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,15 +37,28 @@ public class UserServiceImpl implements UserService {
         return repo.findByEmail(email);
     }
 
-    public User save(UserRegistrationDto registration) {
+    public void save(UserRegistrationDto registration) {
         User user = new User();
         user.setFirstName(registration.getFirstName());
         user.setLastName(registration.getLastName());
         user.setEmail(registration.getEmail());
-        user.setPassword(passwordEncoder.encode(registration.getPassword()));
-        Role roleUser = roleRepo.findByName("ROLE_USER");
-        user.setRoles(Collections.singletonList(roleUser));
-        return repo.save(user);
+        user.setPhone(registration.getPhone());
+        user.setAddress(registration.getAddress());
+        if(!registration.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(registration.getPassword()));
+        }
+        user.setRoles(getRolesList("ROLE_USER"));
+        repo.save(user);
+    }
+
+    public void saveEditedUser(User user, UserEditDto registration, String role) {
+        user.setFirstName(registration.getFirstName());
+        user.setLastName(registration.getLastName());
+        user.setEmail(registration.getEmail());
+        user.setPhone(registration.getPhone());
+        user.setAddress(registration.getAddress());
+        user.setRoles(getRolesList(role));
+        repo.save(user);
     }
 
     @Override
@@ -56,8 +66,9 @@ public class UserServiceImpl implements UserService {
         User user = findByEmail(email);
 
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new UsernameNotFoundException("Email sau parola invalida");
         }
+
         return new org.springframework.security.core.userdetails.User(user.getEmail(),
                 user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
@@ -81,12 +92,32 @@ public class UserServiceImpl implements UserService {
         repo.save(book);
     }
 
-    public User get(long id) {
-        return repo.findById(id).get();
+    public Optional<User> get(long id) {
+        return repo.findById(id);
     }
 
     public void delete(long id) {
         repo.deleteById(id);
     }
 
+    private List<Role> getRolesList(String role)
+    {
+        List<Role> roles = new ArrayList<>();
+        Role roleUser = roleRepo.findByName("ROLE_USER");
+        Role roleLibrarian = roleRepo.findByName("ROLE_LIBRARIAN");
+        Role roleAdmin = roleRepo.findByName("ROLE_ADMIN");
+
+        switch (role) {
+            case "ROLE_ADMIN":
+                roles.add(roleAdmin);
+            case "ROLE_LIBRARIAN":
+                roles.add(roleLibrarian);
+            case "ROLE_USER":
+                roles.add(roleUser);
+            default:
+                break;
+        }
+
+        return roles;
+    }
 }
